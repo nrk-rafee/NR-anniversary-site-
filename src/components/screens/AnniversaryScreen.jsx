@@ -24,9 +24,6 @@ export default function AnniversaryScreen({ onNext }) {
   "/images/2.jpg",
   "/images/3.jpg",
   "/images/4.jpg",
-  "/images/9.jpg",
-  "/images/10.jpg",
-  "/images/11.jpg",
 ];
 
   const [currentProfile, setCurrentProfile] = useState(0);
