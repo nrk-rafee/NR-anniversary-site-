@@ -14,13 +14,9 @@ export default function AnniversaryApp() {
   const [currentScreen, setCurrentScreen] = useState("loader")
 
   const goToIntro = () => setCurrentScreen("intro")
-
   const goToAnniversary = () => setCurrentScreen("anniversary")
-
   const goToGallery = () => setCurrentScreen("gallery")
-
   const goToPuzzle = () => setCurrentScreen("puzzle")
-
   const goToMessage = () => setCurrentScreen("message")
 
   return (
