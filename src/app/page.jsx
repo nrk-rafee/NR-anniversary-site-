@@ -9,6 +9,7 @@ import AnniversaryScreen from "@/components/screens/AnniversaryScreen"
 import PhotoGalleryScreen from "@/components/screens/PhotoGalleryScreen"
 import PuzzleScreen from "@/components/screens/PuzzleScreen"
 import MessageScreen from "@/components/screens/MessageScreen"
+import QuizScreen from "@/components/screens/QuizScreen"
 
 export default function AnniversaryApp() {
   const [currentScreen, setCurrentScreen] = useState("loader")
@@ -18,6 +19,7 @@ export default function AnniversaryApp() {
   const goToGallery = () => setCurrentScreen("gallery")
   const goToPuzzle = () => setCurrentScreen("puzzle")
   const goToMessage = () => setCurrentScreen("message")
+  const goToQuiz = () => setCurrentScreen("quiz")
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-indigo-950 via-black to-purple-950 overflow-hidden">
@@ -62,6 +64,13 @@ export default function AnniversaryApp() {
         {currentScreen === "message" && (
           <MessageScreen
             key="message"
+            onNext={goToQuiz}
+          />
+        )}
+
+        {currentScreen === "quiz" && (
+          <QuizScreen
+            key="quiz"
           />
         )}
 
