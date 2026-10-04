@@ -8,7 +8,7 @@ export default function AnniversaryScreen({ onNext }) {
 
   // ================= Day Calculation =================
   const [displayedDays, setDisplayedDays] = useState(0);
-  const specialDate = new Date("2025-01-05");
+  const specialDate = new Date("2025-03-05");
 
   useEffect(() => {
     const today = new Date();
