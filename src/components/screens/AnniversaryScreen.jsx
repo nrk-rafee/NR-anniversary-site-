@@ -17,13 +17,15 @@ export default function AnniversaryScreen({ onNext }) {
     setDisplayedDays(daysDiff);
   }, []);
 
-  // ================= Profile Image Slideshow =================
-  const profileImages = [
-    const profileImages = [
+// ================= Profile Image Slideshow =================
+const profileImages = [
   "/images/1.jpg",
   "/images/2.jpg",
   "/images/3.jpg",
   "/images/4.jpg",
+  "/images/9.jpg",
+  "/images/10.jpg",
+  "/images/11.jpg",
 ];
 
   const [currentProfile, setCurrentProfile] = useState(0);
