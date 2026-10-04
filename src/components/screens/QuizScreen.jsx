@@ -13,7 +13,7 @@ const questions = [
     {
         question: "What comes after K?",
         options: ["M", "H", "O", "L"],
-        correct: 0,
+        correct: 3, // L is correct
     },
     {
         question: "What comes after X?",
@@ -47,10 +47,15 @@ export default function QuizScreen() {
     const [selected, setSelected] = useState(null)
     const [showResult, setShowResult] = useState(false)
     const [isCorrect, setIsCorrect] = useState(false)
+
     const [answers, setAnswers] = useState([])
+
     const [showNotebook, setShowNotebook] = useState(false)
     const [feeling, setFeeling] = useState("")
+
     const [submitted, setSubmitted] = useState(false)
+
+    const [whatsappSent, setWhatsappSent] = useState(false)
 
     const question = questions[currentQuestion]
 
@@ -59,6 +64,7 @@ export default function QuizScreen() {
 
         setSelected(index)
 
+        // Q5 = opinion question
         if (question.opinion) {
             setAnswers((prev) => [
                 ...prev,
@@ -104,6 +110,43 @@ export default function QuizScreen() {
         setSubmitted(true)
     }
 
+    const sendToWhatsApp = () => {
+        const q5Answer =
+            answers.find(
+                (item) =>
+                    item.question ===
+                    "Amader shomporko take tui kivhabe dekhis?"
+            )?.answer || "Not answered"
+
+        const message = `💌 Anniversary Quiz Result
+
+Q1: ${answers[0]?.answer || "Not answered"}
+
+Q2: ${answers[1]?.answer || "Not answered"}
+
+Q3: ${answers[2]?.answer || "Not answered"}
+
+Q4: ${answers[3]?.answer || "Not answered"}
+
+Q5: Amader shomporko take tui kivhabe dekhis?
+Answer: ${q5Answer}
+
+📝 Her/Your feeling:
+${feeling}
+
+💝 Sent from our anniversary website`
+
+        const whatsappNumber = "8801820341700"
+
+        const whatsappURL =
+            `https://wa.me/${whatsappNumber}?text=` +
+            encodeURIComponent(message)
+
+        window.open(whatsappURL, "_blank")
+
+        setWhatsappSent(true)
+    }
+
     return (
         <ScreenContainer>
 
@@ -111,7 +154,8 @@ export default function QuizScreen() {
 
                 <AnimatePresence mode="wait">
 
-                    {/* QUIZ */}
+                    {/* ================= QUIZ ================= */}
+
                     {!showNotebook && !submitted && (
                         <motion.div
                             key={`question-${currentQuestion}`}
@@ -150,16 +194,20 @@ export default function QuizScreen() {
 
                             {/* Progress */}
                             <p className="text-pink-300/70 text-sm mb-3">
-                                Question {currentQuestion + 1} of {questions.length}
+                                Question {currentQuestion + 1} of{" "}
+                                {questions.length}
                             </p>
 
-                            {/* Progress bar */}
                             <div className="w-full max-w-md mx-auto h-2 bg-white/10 rounded-full overflow-hidden mb-8">
                                 <motion.div
                                     className="h-full bg-gradient-to-r from-pink-500 to-purple-500"
                                     initial={{ width: 0 }}
                                     animate={{
-                                        width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+                                        width: `${
+                                            ((currentQuestion + 1) /
+                                                questions.length) *
+                                            100
+                                        }%`,
                                     }}
                                     transition={{ duration: 0.5 }}
                                 />
@@ -175,7 +223,9 @@ export default function QuizScreen() {
 
                                 {question.options.map((option, index) => {
 
-                                    const isSelected = selected === index
+                                    const isSelected =
+                                        selected === index
+
                                     const isRightAnswer =
                                         !question.opinion &&
                                         index === question.correct
@@ -185,23 +235,35 @@ export default function QuizScreen() {
 
                                     if (showResult) {
 
-                                        if (isSelected && isCorrect) {
+                                        if (
+                                            isSelected &&
+                                            isCorrect
+                                        ) {
                                             buttonStyle =
                                                 "border-green-400 bg-green-500/20"
                                         }
 
-                                        if (isSelected && !isCorrect) {
+                                        if (
+                                            isSelected &&
+                                            !isCorrect
+                                        ) {
                                             buttonStyle =
                                                 "border-red-400 bg-red-500/20"
                                         }
 
-                                        if (!isCorrect && isRightAnswer) {
+                                        if (
+                                            !isCorrect &&
+                                            isRightAnswer
+                                        ) {
                                             buttonStyle =
                                                 "border-green-400 bg-green-500/20"
                                         }
                                     }
 
-                                    if (question.opinion && isSelected) {
+                                    if (
+                                        question.opinion &&
+                                        isSelected
+                                    ) {
                                         buttonStyle =
                                             "border-pink-400 bg-pink-500/20"
                                     }
@@ -210,19 +272,21 @@ export default function QuizScreen() {
                                         <motion.button
                                             key={option}
                                             type="button"
-                                            onClick={() => handleAnswer(index)}
+                                            onClick={() =>
+                                                handleAnswer(index)
+                                            }
                                             whileHover={
                                                 selected === null
                                                     ? {
-                                                        scale: 1.02,
-                                                    }
+                                                          scale: 1.02,
+                                                      }
                                                     : {}
                                             }
                                             whileTap={
                                                 selected === null
                                                     ? {
-                                                        scale: 0.97,
-                                                    }
+                                                          scale: 0.97,
+                                                      }
                                                     : {}
                                             }
                                             className={`w-full p-4 rounded-2xl border-2 text-white text-lg transition-all duration-300 ${buttonStyle}`}
@@ -273,7 +337,7 @@ export default function QuizScreen() {
 
                             </div>
 
-                            {/* Result message */}
+                            {/* Result */}
                             <AnimatePresence>
                                 {showResult && (
                                     <motion.div
@@ -296,7 +360,12 @@ export default function QuizScreen() {
                                             <p className="text-pink-300 font-semibold">
                                                 Not quite! The correct answer is{" "}
                                                 <span className="text-green-400">
-                                                    {question.options[question.correct]}
+                                                    {
+                                                        question
+                                                            .options[
+                                                            question.correct
+                                                        ]
+                                                    }
                                                 </span>{" "}
                                                 💗
                                             </p>
@@ -323,7 +392,8 @@ export default function QuizScreen() {
                         </motion.div>
                     )}
 
-                    {/* NOTEBOOK */}
+                    {/* ================= NOTEBOOK ================= */}
+
                     {showNotebook && !submitted && (
                         <motion.div
                             key="notebook"
@@ -383,13 +453,12 @@ export default function QuizScreen() {
                             </h1>
 
                             <p className="text-white/50 text-sm mb-6">
-                                You can write whatever you honestly feel 💗
+                                Write whatever you honestly feel 💗
                             </p>
 
                             {/* Notebook */}
                             <div className="relative max-w-lg mx-auto">
 
-                                {/* Paper */}
                                 <div className="relative bg-[#fffdf5] rounded-xl shadow-2xl overflow-hidden">
 
                                     {/* Red margin */}
@@ -425,15 +494,15 @@ export default function QuizScreen() {
                                 whileHover={
                                     feeling.trim()
                                         ? {
-                                            scale: 1.05,
-                                        }
+                                              scale: 1.05,
+                                          }
                                         : {}
                                 }
                                 whileTap={
                                     feeling.trim()
                                         ? {
-                                            scale: 0.95,
-                                        }
+                                              scale: 0.95,
+                                          }
                                         : {}
                                 }
                                 className={`mt-7 px-8 py-4 rounded-full font-bold text-lg shadow-xl transition-all ${
@@ -448,7 +517,8 @@ export default function QuizScreen() {
                         </motion.div>
                     )}
 
-                    {/* THANK YOU */}
+                    {/* ================= THANK YOU ================= */}
+
                     {submitted && (
                         <motion.div
                             key="thankyou"
@@ -467,35 +537,52 @@ export default function QuizScreen() {
                         >
 
                             {/* Flying butterflies */}
-                            {[0, 1, 2, 3, 4, 5].map((item) => (
-                                <motion.div
-                                    key={item}
-                                    className="absolute text-2xl"
-                                    initial={{
-                                        x: 0,
-                                        y: 100,
-                                        opacity: 0,
-                                    }}
-                                    animate={{
-                                        x:
-                                            (item % 2 === 0 ? -1 : 1) *
-                                            (80 + item * 35),
-                                        y:
-                                            -180 -
-                                            item * 30,
-                                        opacity: [0, 1, 1, 0],
-                                        rotate: [0, 20, -20, 0],
-                                    }}
-                                    transition={{
-                                        duration: 3 + item * 0.2,
-                                        delay: item * 0.15,
-                                        repeat: Infinity,
-                                        repeatDelay: 1,
-                                    }}
-                                >
-                                    🦋
-                                </motion.div>
-                            ))}
+                            {[0, 1, 2, 3, 4, 5].map(
+                                (item) => (
+                                    <motion.div
+                                        key={item}
+                                        className="absolute text-2xl"
+                                        initial={{
+                                            x: 0,
+                                            y: 100,
+                                            opacity: 0,
+                                        }}
+                                        animate={{
+                                            x:
+                                                (item % 2 === 0
+                                                    ? -1
+                                                    : 1) *
+                                                (80 + item * 35),
+                                            y:
+                                                -180 -
+                                                item * 30,
+                                            opacity: [
+                                                0,
+                                                1,
+                                                1,
+                                                0,
+                                            ],
+                                            rotate: [
+                                                0,
+                                                20,
+                                                -20,
+                                                0,
+                                            ],
+                                        }}
+                                        transition={{
+                                            duration:
+                                                3 +
+                                                item * 0.2,
+                                            delay:
+                                                item * 0.15,
+                                            repeat: Infinity,
+                                            repeatDelay: 1,
+                                        }}
+                                    >
+                                        🦋
+                                    </motion.div>
+                                )
+                            )}
 
                             <motion.div
                                 className="text-7xl mb-6"
@@ -517,6 +604,37 @@ export default function QuizScreen() {
                             <p className="text-white/70 max-w-md leading-relaxed">
                                 Your words mean more than you know. 🥹
                             </p>
+
+                            {/* WhatsApp Button */}
+                            <motion.button
+                                type="button"
+                                onClick={sendToWhatsApp}
+                                whileHover={{
+                                    scale: 1.06,
+                                }}
+                                whileTap={{
+                                    scale: 0.95,
+                                }}
+                                className="mt-8 px-8 py-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold text-lg shadow-xl"
+                            >
+                                Send to WhatsApp 💚
+                            </motion.button>
+
+                            {whatsappSent && (
+                                <motion.p
+                                    initial={{
+                                        opacity: 0,
+                                        y: 10,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                    }}
+                                    className="mt-4 text-green-300 text-sm"
+                                >
+                                    WhatsApp opened with your message 💚
+                                </motion.p>
+                            )}
 
                             <motion.div
                                 className="mt-7 text-3xl"
