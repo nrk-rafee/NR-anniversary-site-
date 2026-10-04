@@ -85,12 +85,12 @@ export default function PuzzleScreen({ onComplete }) {
   return (
     <ScreenContainer>
       <motion.section
-        className="min-h-screen flex items-center justify-center px-4 py-8"
+        className="min-h-screen flex items-center justify-center px-3 py-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="w-full max-w-md flex flex-col items-center text-center">
+        <div className="w-full max-w-xl flex flex-col items-center text-center">
 
           <AnimatePresence mode="wait">
 
@@ -147,34 +147,37 @@ export default function PuzzleScreen({ onComplete }) {
                   Swaps: {swaps}
                 </p>
 
-                <div className="grid grid-cols-3 gap-1.5 w-full aspect-square rounded-2xl overflow-hidden border-2 border-white/20 bg-black/30 p-1.5 shadow-2xl">
-                  {pieces.map((piece, index) => {
-                    const row = Math.floor(piece / 3)
-                    const col = piece % 3
+                {/* Bigger Puzzle */}
+                <div className="w-full max-w-[520px] mx-auto aspect-square">
+                  <div className="grid grid-cols-3 gap-2 w-full h-full rounded-2xl overflow-hidden border-2 border-white/20 bg-black/30 p-2 shadow-2xl">
+                    {pieces.map((piece, index) => {
+                      const row = Math.floor(piece / 3)
+                      const col = piece % 3
 
-                    return (
-                      <motion.button
-                        key={`${piece}-${index}`}
-                        type="button"
-                        onClick={() => handlePieceClick(index)}
-                        whileTap={{ scale: 0.94 }}
-                        animate={{
-                          scale: selected === index ? 0.94 : 1,
-                        }}
-                        className={`relative overflow-hidden rounded-lg border-2 ${
-                          selected === index
-                            ? "border-pink-400 ring-2 ring-pink-400/50"
-                            : "border-white/10"
-                        }`}
-                        style={{
-                          backgroundImage: `url(${IMAGE})`,
-                          backgroundSize: "300% 300%",
-                          backgroundPosition: `${col * 50}% ${row * 50}%`,
-                        }}
-                        aria-label={`Puzzle piece ${index + 1}`}
-                      />
-                    )
-                  })}
+                      return (
+                        <motion.button
+                          key={`${piece}-${index}`}
+                          type="button"
+                          onClick={() => handlePieceClick(index)}
+                          whileTap={{ scale: 0.94 }}
+                          animate={{
+                            scale: selected === index ? 0.94 : 1,
+                          }}
+                          className={`relative overflow-hidden rounded-lg border-2 ${
+                            selected === index
+                              ? "border-pink-400 ring-2 ring-pink-400/50"
+                              : "border-white/10"
+                          }`}
+                          style={{
+                            backgroundImage: `url(${IMAGE})`,
+                            backgroundSize: "300% 300%",
+                            backgroundPosition: `${col * 50}% ${row * 50}%`,
+                          }}
+                          aria-label={`Puzzle piece ${index + 1}`}
+                        />
+                      )
+                    })}
+                  </div>
                 </div>
 
                 <p className="text-white/40 text-xs mt-4">
