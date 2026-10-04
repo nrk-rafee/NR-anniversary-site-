@@ -97,7 +97,7 @@ export default function PhotoGalleryScreen({ onNext }) {
                         whileTap={{ scale: 0.95 }}
                     >
                          <motion.div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <span className="relative z-10">Read My Message 💌</span>
+                        <span className="relative z-10"> continue🎀 </span>
                     </motion.button>
                 </div>
             </motion.section>
